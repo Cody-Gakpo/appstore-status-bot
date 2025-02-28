@@ -37,13 +37,18 @@ const checkVersion = async (app) => {
   const db = dirty("store.db");
   db.on("load", async function () {
     var lastAppInfo = db.get(appInfoKey);
-    if (!lastAppInfo || lastAppInfo.status != app.status) {
+    const allowedStatuses = ["Waiting For Review", "In Review", "Pending Developer Release"];
+
+    if (!lastAppInfo || lastAppInfo.status !== app.status) {
       console.log("[*] status is different");
 
-      slack.post(app, db.get(submissionStartKey));
-      discord.post(app, db.get(submissionStartKey));
+      // 특정 상태일 때만 알림 전송
+      if (allowedStatuses.includes(app.status)) {
+        slack.post(app, db.get(submissionStartKey));
+        discord.post(app, db.get(submissionStartKey));
+      }
 
-      if (app.status == "Waiting For Review") {
+      if (app.status === "Waiting For Review") {
         db.set(submissionStartKey, new Date());
       }
     } else {
@@ -60,6 +65,7 @@ const checkVersion = async (app) => {
     }
   });
 };
+
 
 const getGist = async () => {
   const gist = await octokit.rest.gists
