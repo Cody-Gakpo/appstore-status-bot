@@ -37,9 +37,9 @@ const checkVersion = async (app) => {
   const db = dirty("store.db");
   db.on("load", async function () {
     var lastAppInfo = db.get(appInfoKey);
-    const allowedStatuses = ["Waiting For Review", "In Review", "Pending Developer Release"];
+    const allowedStatuses = ["Waiting for review", "In review", "Pending developer release"];
 
-    if (!lastAppInfo || lastAppInfo.status !== app.status) {
+    if (!lastAppInfo || lastAppInfo.status != app.status) {
       console.log("[*] status is different");
 
       // 특정 상태일 때만 알림 전송
@@ -48,7 +48,7 @@ const checkVersion = async (app) => {
         discord.post(app, db.get(submissionStartKey));
       }
 
-      if (app.status === "Waiting For Review") {
+      if (app.status == "Waiting For Review") {
         db.set(submissionStartKey, new Date());
       }
     } else {
