@@ -37,7 +37,7 @@ const checkVersion = async (app) => {
   const db = dirty("store.db");
   db.on("load", async function () {
     var lastAppInfo = db.get(appInfoKey);
-    const allowedStatuses = ["Waiting for review", "In review", "Pending developer release"];
+    const allowedStatuses = ["Waiting For Review", "In Review", "Pending Apple Release"];
 
     if (!lastAppInfo || lastAppInfo.status != app.status) {
       console.log("[*] status is different");
