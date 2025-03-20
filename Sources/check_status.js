@@ -43,10 +43,10 @@ const checkVersion = async (app) => {
       console.log("[*] status is different");
 
       // 특정 상태일 때만 알림 전송
-      if (allowedStatuses.includes(app.status)) {
+      // if (allowedStatuses.includes(app.status)) {
         slack.post(app, db.get(submissionStartKey));
         discord.post(app, db.get(submissionStartKey));
-      }
+      // }
 
       if (app.status == "Waiting For Review") {
         db.set(submissionStartKey, new Date());
